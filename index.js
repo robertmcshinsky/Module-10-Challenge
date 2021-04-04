@@ -172,7 +172,7 @@ async function getNumberOfEmployees() {
 
 function generateWebpage(employees) {
   // USE FS HERE
-  console.log("@generateWebpage");
+  console.log("@generateWebpage"); 
   console.log(employees[1].name.name); // logs the second person's name
 }
 
