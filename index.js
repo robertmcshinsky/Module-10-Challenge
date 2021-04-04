@@ -59,6 +59,13 @@ const questions = [
     name: "team",
     message: "What is the team name?",
   },
+  // Gender question -- 9
+  {
+    type: "list",
+    name: "gender",
+    message: "What is the employee gender?",
+    choices: ["Male", "Female", "Other"],
+  },
 ];
 
 // CLASSES
@@ -138,6 +145,7 @@ async function getNumberOfEmployees() {
     num = num.workers;
     console.log(num);
 
+    let team = await inquirer.prompt(questions[8]);
     let employees = [];
 
     // LOOP TO ASK THE QUESTIONS FOR EACH WORKER
@@ -163,17 +171,148 @@ async function getNumberOfEmployees() {
       employees[i] = k;
     }
     console.log(employees);
-    generateWebpage(employees);
+    generateWebpage(employees, num, team);
     //
   } catch (err) {
     console.log("ERROR @getNumberOfEmployees");
+    console.log(err);
   }
 }
 
-function generateWebpage(employees) {
-  // USE FS HERE
+function generateWebpage(employees, num, team) {
   console.log("@generateWebpage");
-  console.log(employees[1].name.name); // logs the second person's name
+
+  //DONE CREATING THE FIRST 1/2 OF THE HTML DOCUMENT
+  let docType = "<!DOCTYPE html>";
+
+  let doc = document.createElement("html");
+  doc.setAttribute("lang", "en");
+
+  let head = document.createElement("head");
+
+  let metaCharset = document.createElement("meta");
+  metaCharset.setAttribute("charset", "UTF-8");
+
+  let httpEquiv = document.createElement("meta");
+  httpEquiv.setAttribute("http-equiv", "X-UA-Compatable");
+  httpEquiv.setAttribute("content", "IE=edge");
+
+  let viewport = document.createElement("meta");
+  viewport.setAttribute("name", "viewport");
+  viewport.setAttribute("content", "width=device-width, initial-scale-1.0");
+
+  let title = document.createElement("title");
+  title.innerHTML = team;
+
+  let styles = document.createElement("Link");
+  styles.setAttribute("rel", "stylesheet");
+  styles.setAttribute(
+    "href",
+    "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  );
+
+  //DONE PUTTING THE FIRST 1/2 OF THE HTML DOCUMENT TOGETHER
+
+  head.appendChild(metaCharset);
+  head.appendChild(httpEquiv);
+  head.appendChild(viewport);
+  head.appendChild(title);
+  head.appendChild(styles);
+
+  //TODO CREATE THE BODY OF THE HTML DOCUMENT
+  let body = document.createElement("body");
+
+  // HEADER
+  let header = document.createElement("header");
+  header.setAttribute("class", "jumbotron text-center");
+
+  let headerTitle = document.createElement("h1");
+  headerTitle.innerHTML = team;
+
+  // MAIN
+  let main = document.createElement("main");
+  main.setAttribute("style", "width:75%; margin-left: 15%");
+
+  // FOOTER
+  let footer = document.createElement("footer");
+  footer.setAttribute("class", "jumbotron text-center");
+
+  // CREATING THE CARDS
+  let cardColumns = document.createElement("div");
+  cardColumns.setAttribute("class", "card-columns");
+
+  for (let i = 0; i < num; ++i) {
+    let card = document.createElement("div");
+
+    let cardTextRole = document.createElement("h2");
+    cardTextRole.setAttribute(
+      "class",
+      "card-text font-weight-bold text-center text-uppercase"
+    );
+    cardTextRole.innerHTML = employees[i].role.role;
+
+    let cardImg = document.createElement("img");
+    cardImg.setAttribute("class", "card-img-top");
+
+    if (employees[i].gender.gender === "Male") {
+      card.setAttribute("class", "card bg-danger");
+      cardImg.setAttribute("src", "/images/mario.png");
+    } else {
+      cardImg.setAttribute("src", "/images/peach.png");
+      card.setAttribute("class", "card bg-warning");
+    }
+
+    cardImg.setAttribute("alt" /* Here will be the person's name */);
+    cardImg.setAttribute("style", "width: 50%; margin-left: 25%");
+
+    let cardBody = document.createElement("div");
+    cardBody.setAttribute("class", "card-body text-center");
+
+    let cardTextName = document.createElement("h3");
+    cardTextName.setAttribute(
+      "class",
+      "card-text font-weight-bold text-center"
+    );
+    cardTextName.innerHTML = employees[i].name.name;
+
+    let cardTextId = document.createElement("h4");
+    cardTextId.setAttribute("class", "card-text text-center");
+    cardTextId.innerHTML = "ID: ";
+
+    let cardTextEmail = document.createElement("h4");
+    cardTextEmail.setAttribute("class", "card-text text-center");
+    cardTextEmail.innerHTML = "Email: ";
+
+    //todo Create if statement for manager/engineer/intern
+    let cardTextExtra = document.createElement("h4");
+    cardTextExtra.setAttribute("class", "card-text text-center");
+    cardTextExtra.innerHTML = "Extra:";
+
+    //TODO APPENDING THE CARDS TO THE HTML DOCUMENT
+    cardBody.appendChild(cardTextName);
+    cardBody.appendChild(cardTextId);
+    cardBody.appendChild(cardTextEmail);
+    cardBody.appendChild(cardTextExtra);
+
+    card.appendChild(cardTextRole);
+    card.appendChild(cardImg);
+    card.appendChild(cardBody);
+
+    cardColumns.appendChild(card);
+  }
+  main.appendChild(cardColumns);
+
+  body.appendChild(header);
+  body.appendChild(main);
+  body.appendChild(footer);
+
+  doc.appendChild(head);
+  doc.appendChild(body);
+  doc.appendChild(footer);
+
+  docType.appendChild(doc);
+  console.log(docType);
+  console.log(cardColumns);
 }
 
 getNumberOfEmployees();
