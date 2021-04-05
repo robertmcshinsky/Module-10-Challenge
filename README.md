@@ -18,7 +18,7 @@
 
 ## Example of a webpage created
 
-![Webpage Created](images\example.png)
+![Webpage Created](https://github.com/robertmcshinsky/Module-10-Challenge/blob/2a944dfac444a9e0345daa8f71edc2b3541db95d/images/example.png)
 
 ## Usage
 
