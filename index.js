@@ -1,16 +1,15 @@
 console.log("Start");
 let fs = require("fs");
 let inquirer = require("inquirer");
-let jest = require("jest");
 
 function randImage(role) {
   let choice;
   if (role === "Manager") {
-    choice = "mario";
-  } else if (role === "Engineer") {
-    choice = "luigi";
-  } else {
     choice = "goomba";
+  } else if (role === "Engineer") {
+    choice = "mario";
+  } else {
+    choice = "luigi";
   }
 
   return choice;
@@ -41,24 +40,28 @@ const questions = [
     type: "input",
     name: "id",
     message: "What is their employee ID?",
+    default: 0,
   },
   // Email -- 4
   {
     type: "input",
     name: "email",
     message: "What is their Email?",
+    default: "",
   },
   // Manager only question -- 5
   {
     type: "number",
     name: "extra",
     message: "What is the Manager's office number?",
+    default: "0",
   },
   // Engineer only question -- 6
   {
     type: "input",
     name: "extra",
     message: "What is their github username?",
+    default: "Click here",
   },
   // Intern only question -- 7
   {
@@ -111,7 +114,7 @@ class Engineer extends Employee {
     this.github = github;
   }
   getGithub() {
-    console.log(this.github);
+    return this.github;
   }
 
   getRole() {
@@ -201,6 +204,7 @@ async function getNumberOfEmployees() {
 function generateWebpage(employees, num, team, extra) {
   console.log("@generateWebpage");
   //DONE CREATING THE FIRST 1/2 OF THE HTML DOCUMENT
+
   team = team.team;
   let endDiv = "</div>";
   let document =
@@ -213,7 +217,7 @@ function generateWebpage(employees, num, team, extra) {
     "<title>Team " +
     team +
     "</title>" +
-    '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">' +
+    '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"><style> a.linked:link {text-decoration: none; color: gray; cursor: pointer}</style>' +
     "</head>";
   let body =
     "<body>" +
@@ -222,7 +226,7 @@ function generateWebpage(employees, num, team, extra) {
     team +
     "</h1>" +
     "</header>";
-  let main = '<main style="width: 75%; margin-left: 15%">';
+  let main = '<main style="width: 50%; margin-left: 25%">';
 
   console.log("Card");
 
@@ -230,7 +234,7 @@ function generateWebpage(employees, num, team, extra) {
   let card;
   for (let i = 0; i < num; ++i) {
     let cardTextRole =
-      '<h2 class="card-text font-weight-bold text-center text-uppercase">' +
+      '<h2 class="card-text font-weight-bold text-center">' +
       employees[i].role.role +
       "</h2>";
     card = '<div class="card bg-danger">';
@@ -247,20 +251,34 @@ function generateWebpage(employees, num, team, extra) {
       "</h3>";
 
     let cardTextId =
-      '<h4 class="card-text text-center">ID: ' + employees[i].id.id + "</h4>";
+      '<h5 class="card-text text-center">ID: ' + employees[i].id.id + "</h5>";
 
     let cardTextEmail =
-      '<h4 class="card-text text-center">Email: ' +
+      '<h5 class="linked card-text text-center">Email: <a href="mailto:' +
       employees[i].email.email +
-      "</h4>";
+      '">' +
+      employees[i].email.email +
+      "</a></h5>";
 
+    let cardTextExtra;
+    if (employees[i].role.role === "Engineer") {
+      cardTextExtra =
+        '<h5 class="linked card-text text-center">' +
+        extra[i].extra +
+        ': <a href="https://github.com/' +
+        extra[i].employeeExtraQ.extra +
+        '">' +
+        employees[i].name.name +
+        "</a></h5>";
+    } else {
+      cardTextExtra =
+        '<h5 class="card-text text-center">' +
+        extra[i].extra +
+        ": " +
+        extra[i].employeeExtraQ.extra +
+        "</h5>";
+    }
     //todo Create if statement for manager/engineer/intern
-    let cardTextExtra =
-      '<h4 class="card-text text-center">' +
-      extra[i].extra +
-      ": " +
-      extra[i].employeeExtraQ.extra +
-      "</h4>";
     cardBody += cardTextName;
     cardBody += cardTextId;
     cardBody += cardTextEmail;
@@ -283,4 +301,7 @@ function generateWebpage(employees, num, team, extra) {
     console.log("Saved!");
   });
 }
+
 getNumberOfEmployees();
+
+module.exports = Employee;
