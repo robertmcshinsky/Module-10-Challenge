@@ -34,7 +34,7 @@
 
 ## Video Demonstration
 
-![Video Demo](https://drive.google.com/file/d/1-Pr1LDdVUBQF63-1fn0SpunqGxSx48X6/view)
+[Video Demo](https://drive.google.com/file/d/1-Pr1LDdVUBQF63-1fn0SpunqGxSx48X6/view)
 
 ## Questions
 
